@@ -1,17 +1,17 @@
 #include "pch.h"
 
-BOOL Hook(void * pAddr, void * pNAddr, int len)
+bool Hook(void* addr, void* func, int len)
 {
 	if (len < 5)
-		return FALSE;
+		return false;
 
-	DWORD curProtect;
-	VirtualProtect(pAddr, len, PAGE_EXECUTE_READWRITE, &curProtect);
-	memset(pAddr, 0x90, len);
-	DWORD relativeAddress = ((DWORD)pNAddr - (DWORD)pAddr) - 5;
-	*(BYTE*)pAddr = 0xE9;
-	*(DWORD*)((DWORD)pAddr + 1) = relativeAddress;
-	DWORD temp;
-	VirtualProtect(pAddr, len, curProtect, &temp);
-	return TRUE;
+	unsigned long old;
+	VirtualProtect(addr, len, PAGE_EXECUTE_READWRITE, &old);
+	memset(addr, 0x90, len);
+	int cave = ((int)func - (int)addr) - 5;
+	*(unsigned char*)addr = 0xE9;
+	*(int*)((int)addr + 1) = cave;
+	unsigned long temp;
+	VirtualProtect(addr, len, old, &temp);
+	return true;
 }
