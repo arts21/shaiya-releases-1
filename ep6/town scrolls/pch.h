@@ -8,7 +8,7 @@ bool Hook(void* addr, void* func, int len);
 //expressions
 int packet_retn = 0x4784DB;
 int case_0x050A = 0x478F8D;
-int effect_retn = 0x47316A;
+int effect_retn = 0x473170;
 int effect_jump = 0x47469F;
 int effect_fail = 0x47468A;
 int cancel_retn = 0x49AE66;
