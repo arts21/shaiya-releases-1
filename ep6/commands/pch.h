@@ -4,12 +4,12 @@
 #include <windows.h>
 //declarations
 void CMDFunc();
-BOOL Hook(void * pAddr, void * pNAddr, int len);
+bool Hook(void* addr, void* func, int len);
 //expressions
-DWORD cmd_input = 0x632D07;
-DWORD cmd_retn = 0x4867A6;
-DWORD cmd_jump = 0x487532;
-DWORD sysmsg_uni = 0x423150;
+int cmd_input = 0x632D07;
+int cmd_retn = 0x4867A6;
+int cmd_jump = 0x487532;
+int sysmsg_uni = 0x423150;
 LPCSTR szClose = "/close";
 LPCSTR szMarket = "/merchant";
 LPCSTR szKeeper = "/warehouse";
