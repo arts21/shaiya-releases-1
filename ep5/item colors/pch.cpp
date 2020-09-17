@@ -300,7 +300,7 @@ void __declspec(naked) bag_hook() {
 		je _wind
 		cmp dl,0xB4 //storm
 		je _wind
-    	//move all the types into ecx
+    		//move all the types into ecx
 		movzx ecx,byte ptr[eax+0x8666DD]
 		//multiply the types by 1000
 		imul ecx,0x3E8
@@ -700,7 +700,7 @@ void __declspec(naked) bar_hook() {
 		je _wind
 		cmp dl,0xB4 //storm
 		je _wind
-    	//move all the types into ecx
+    		//move all the types into ecx
 		movzx ecx,byte ptr[esi+0x8666DD]
 		//multiply the types by 1000
 		imul ecx,0x3E8
