@@ -1,5 +1,4 @@
 * town teleport scrolls
-* item mall solution
 * npc commands
 * elemental item colors
 
