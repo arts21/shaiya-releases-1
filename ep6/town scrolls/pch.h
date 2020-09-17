@@ -4,18 +4,18 @@
 #include <windows.h>
 //declarations
 void TownFunc();
-BOOL Hook(void * pAddr, void * pNAddr, int len);
+bool Hook(void* addr, void* func, int len);
 //expressions
-DWORD packet_retn = 0x4784DB;
-DWORD case_0x050A = 0x478F8D;
-DWORD effect_retn = 0x47316A;
-DWORD effect_jump = 0x47469F;
-DWORD effect_fail = 0x47468A;
-DWORD cancel_retn = 0x49AE66;
-DWORD cancel_fail = 0x49AEBA;
+int packet_retn = 0x4784DB;
+int case_0x050A = 0x478F8D;
+int effect_retn = 0x47316A;
+int effect_jump = 0x47469F;
+int effect_fail = 0x47468A;
+int cancel_retn = 0x49AE66;
+int cancel_fail = 0x49AEBA;
 //ps_game functions
-DWORD ItemUseNSend = 0x4728E0;
-DWORD SConnectionSend = 0x4ED0E0;
-DWORD PSendViewCombat = 0x4D56D0;
+int ItemUseNSend = 0x4728E0;
+int SConnectionSend = 0x4ED0E0;
+int PSendViewCombat = 0x4D56D0;
 //packet buffer
 unsigned char tele_packet[8];
