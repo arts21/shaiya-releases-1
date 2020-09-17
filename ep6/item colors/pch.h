@@ -5,14 +5,14 @@
 #include <array>
 //declarations
 void ItemFunc();
-BOOL Hook(void * pAddr, void * pNAddr, int len);
+bool Hook(void* addr, void* func, int len);
 //expressions
-DWORD icon_render = 0x4B7240;
-DWORD over_render = 0x4B6180;
-DWORD bag_retn = 0x518275;
-DWORD bag_jump = 0x518287;
-DWORD bar_retn = 0x4FFCE8;
-DWORD bar_jump = 0x4FFCF7;
+int icon_render = 0x4B7240;
+int over_render = 0x4B6180;
+int bag_retn = 0x518275;
+int bag_jump = 0x518287;
+int bar_retn = 0x4FFCE8;
+int bar_jump = 0x4FFCF7;
 //arrays for storing item ids
 std::array<int, 2048> bag_arr;
 std::array<int, 1024> bar_arr;
