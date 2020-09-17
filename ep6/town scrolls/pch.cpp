@@ -116,7 +116,7 @@ void __declspec(naked) effect_hook() {
 		//check which item was used
 		_item:
 		cmp dword ptr[eax],0x18AEE
-        je _101102
+        	je _101102
 		cmp dword ptr[eax],0x18AEF
 		je _101103
 		cmp dword ptr[eax],0x18AF0
@@ -138,24 +138,24 @@ void __declspec(naked) effect_hook() {
 		_101102:
 		//check the country
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x0
-        jne _fail
+        	cmp cl,0x0
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _pantanasa
 		jmp effect_fail
 
 		_101103:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x1
-        jne _fail
+        	cmp cl,0x1
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _theodores
 		jmp effect_fail
 
 		_101104:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x0
-        jne _fail
+        	cmp cl,0x0
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _beika
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -166,8 +166,8 @@ void __declspec(naked) effect_hook() {
 
 		_101105:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x0
-        jne _fail
+        	cmp cl,0x0
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _haldeck
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -178,8 +178,8 @@ void __declspec(naked) effect_hook() {
 
 		_101106:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x0
-        jne _fail
+        	cmp cl,0x0
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _silvaren
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -190,8 +190,8 @@ void __declspec(naked) effect_hook() {
 
 		_101107:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x1
-        jne _fail
+        	cmp cl,0x1
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _suteron
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -202,8 +202,8 @@ void __declspec(naked) effect_hook() {
 
 		_101108:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x1
-        jne _fail
+        	cmp cl,0x1
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _aumeros
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -214,8 +214,8 @@ void __declspec(naked) effect_hook() {
 
 		_101109:
 		mov cl,byte ptr[ebp+0x12D]
-        cmp cl,0x1
-        jne _fail
+        	cmp cl,0x1
+        	jne _fail
 		cmp byte ptr[tele_packet+0x4],0x0
 		je _warune
 		cmp byte ptr[tele_packet+0x4],0x1
@@ -379,7 +379,7 @@ void __declspec(naked) cancel_hook() {
 		_check:
 		cmp dword ptr[eax+0x58B8],0x0
 		jne _cancel
-        jmp cancel_fail
+        	jmp cancel_fail
 	}
 }
 
