@@ -21,8 +21,8 @@ __declspec(naked) void cmd_hook()
 {
 	_asm
 	{
-		push 0x6 //command length
-		push szClose //command string
+		push 0x6 //string length
+		push close_str //command string
 		push edi
 		call cmd_input
 		add esp,0xC
@@ -34,7 +34,7 @@ __declspec(naked) void cmd_hook()
 		
 		_market:
 		push 0x9
-		push szMarket
+		push market_str
 		push edi
 		call cmd_input
 		add esp,0xC
@@ -53,7 +53,7 @@ __declspec(naked) void cmd_hook()
 		
 		_keeper:
 		push 0xA
-		push szKeeper
+		push keeper_str
 		push edi
 		call cmd_input
 		add esp,0xC
@@ -70,7 +70,7 @@ __declspec(naked) void cmd_hook()
 			
 		_repair:
 		push 0xB
-		push szRepair
+		push repair_str
 		push edi
 		call cmd_input
 		add esp,0xC
@@ -87,7 +87,7 @@ __declspec(naked) void cmd_hook()
 
 		_reroll:
 		push 0xB
-		push szReroll
+		push reroll_str
 		push edi
 		call cmd_input
 		add esp,0xC
