@@ -1,7 +1,7 @@
 #include "pch.h"
 
 /*
-pointer addresses
+memory addresses
 0090D1D4 - gm status
 11 = status 0
 5 = status 80
@@ -16,25 +16,7 @@ pointer addresses
 022AB7B8 - npc name
 */
 
-/*
-message arguments
-0F = orange
-10 = red
-11 = red
-12 = yellow
-13 = green
-14 = purple
-15 = light blue
-16 = light yellow
-post as notice
-17 = white
-18 = yellow
-post in chat box
-19+ = white
-0E- = white
-*/
-
-//hooks new user commands
+//hooks user commands
 __declspec(naked) void cmd_hook()
 {
 	_asm
@@ -49,6 +31,7 @@ __declspec(naked) void cmd_hook()
 		//gives them the option to close window
 		mov dword ptr ds:[0x9144E4],0x0 //close
 		jmp cmd_jump
+		
 		_market:
 		push 0x9
 		push szMarket
@@ -67,6 +50,7 @@ __declspec(naked) void cmd_hook()
 		mov dword ptr ds:[0x22AB7B8],0x0 //name
 		mov dword ptr ds:[0x9144E4],0x65 //market
 		jmp cmd_jump
+		
 		_keeper:
 		push 0xA
 		push szKeeper
@@ -83,6 +67,7 @@ __declspec(naked) void cmd_hook()
 		mov dword ptr ds:[0x22AB7B8],0x0 //name
 		mov dword ptr ds:[0x9144E4],0x67 //warehouse
 		jmp cmd_jump
+			
 		_repair:
 		push 0xB
 		push szRepair
@@ -99,6 +84,7 @@ __declspec(naked) void cmd_hook()
 		mov dword ptr ds:[0x22AB7B8],0x0 //name
 		mov dword ptr ds:[0x9144E4],0x66 //blacksmith
 		jmp cmd_jump
+
 		_reroll:
 		push 0xB
 		push szReroll
@@ -120,7 +106,6 @@ __declspec(naked) void cmd_hook()
 		push 0x13D4
 		jmp cmd_retn
 
-		//sends a notice
 		_fail:
 		push 0xC
 		push 0x326 //sysmsg-uni.txt line
@@ -136,7 +121,7 @@ void CMDFunc() {
 	Hook((void*)0x4867A1, cmd_hook, 5);
 	//overwrites CustomGame.dll help menu npcs
 	memcpy((void*)0x522160, (void*)help_menu, sizeof(help_menu));
-	//automatically maxes item stacks for fast sales
+	//maxes the item count when selling to an npc
 	memcpy((void*)0x42E131, max_sell, sizeof(max_sell));
 	//ignores an npc function result (bug workaround)
 	memcpy((void*)0x444129, npc_jmp, sizeof(npc_jmp));
