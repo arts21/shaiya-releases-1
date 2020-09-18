@@ -370,7 +370,8 @@ void __declspec(naked) effect_hook() {
 //hooks CUser::CancelMove
 void __declspec(naked) cancel_hook() {
 	__asm {
-		cmp eax,0x2 //teleport type
+		//to-do: do away with this
+		cmp ecx,0x2 //teleport type
 		jl _check
 		_cancel:
 		jmp cancel_retn
