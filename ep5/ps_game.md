@@ -143,7 +143,7 @@
 00427470 - CZone::SendView
 004277B0 - CZone::PSendAllCountry
 00427A00 - CZone::PSendAll
-00427C10 - CZone::PSendView
+00427CF0 - CZone::PSendView
 004280A0 - CUser::IsDeath
 004280B0 - CMob::IsDeath
 004280F0 - CTrab::GetCountry
