@@ -16,6 +16,18 @@ unsigned int charid;
 };
 */
 
+/*
+teleport types
+0 = /town and /return
+1 = ps_game functions
+2 = teleport stone
+3 = boot/arena/capital
+4 = party summon
+5 = movement
+6 = guild house
+7 = town scroll
+*/
+
 //hooks CUser::PacketPC
 void __declspec(naked) packet_hook() {
 	__asm {
@@ -26,20 +38,21 @@ void __declspec(naked) packet_hook() {
 		jmp packet_retn
 
 		_town:
-		//save the packet in memory
-		push eax
-		push edx
-		mov eax,dword ptr[ebp+0x0]
+		/*save the packet in an unused
+		memory location for later use*/
+		mov word ptr[ecx+0x58A0],ax
+		mov dl,byte ptr[ebp+0x2]
+		mov byte ptr[ecx+0x58A2],dl
+		mov dl,byte ptr[ebp+0x3]
+		mov byte ptr[ecx+0x58A3],dl
 		mov dl,byte ptr[ebp+0x4]
-		mov dword ptr[tele_packet],eax
-		mov byte ptr[tele_packet+0x4],dl 
-		pop edx
-		pop eax
+		mov byte ptr[ecx+0x58A4],dl
 
 		//send the packet back
+		lea edx,[ecx+0x58A0]
 		push ecx //user = ecx
-		push offset tele_packet
-		push 0x5
+		push edx //packet
+		push 0x5 //length
 		call send_packet_player
 
 		jmp case_0x050A
@@ -85,10 +98,10 @@ void __declspec(naked) effect_hook() {
 		_teleport:
 		mov ecx,[esp+0x18]
 		add ecx,0x1388 //delay time
-		//save the type and delay
-		mov dword ptr[ebp+0x58B4],0x1
-		mov dword ptr[ebp+0x58B8],ecx
-			
+		//save the custom tele type
+		mov dword ptr[ebp+0x58B4],0x7
+		mov dword ptr[ebp+0x58B8],ecx 
+
 		//send the view packet
 		mov eax,[ebp+0xDC] //charid
 		mov edx,0x0221 //opcode
@@ -102,7 +115,7 @@ void __declspec(naked) effect_hook() {
 		call PSendViewCombat
 			
 		//to-do: consume after cast
-		
+
 		//consume the item
 		mov edx,[esp+0xB5C]
 		mov eax,[esp+0xB58]
@@ -113,7 +126,7 @@ void __declspec(naked) effect_hook() {
 		call ItemUseNSend
 		jmp effect_jump
 
-		//check which item was used
+		//check the item id
 		_item:
 		cmp dword ptr[eax],0x18AEE
         	je _101102
@@ -133,94 +146,93 @@ void __declspec(naked) effect_hook() {
 		je _101109
 		jmp effect_fail
 
-		/*compare the last packet byte to
-		determine the teleport location*/
 		_101102:
 		//check the country
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x0
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x0
+		jne _fail
+		//compare the location byte
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _pantanasa
 		jmp effect_fail
 
 		_101103:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x1
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x1
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _theodores
 		jmp effect_fail
 
 		_101104:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x0
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x0
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _beika
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _aelbeageu
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _keolloseu
 		jmp effect_fail
 
 		_101105:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x0
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x0
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _haldeck
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _arktuis
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _elaste
 		jmp effect_fail
 
 		_101106:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x0
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x0
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _silvaren
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _whitesand
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _willieoseu
 		jmp effect_fail
 
 		_101107:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x1
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x1
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _suteron
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _gliter
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _aridon
 		jmp effect_fail
 
 		_101108:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x1
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x1
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _aumeros
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _aruma
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _starfumos
 		jmp effect_fail
 
 		_101109:
 		mov cl,byte ptr[ebp+0x12D]
-        	cmp cl,0x1
-        	jne _fail
-		cmp byte ptr[tele_packet+0x4],0x0
+		cmp cl,0x1
+		jne _fail
+		cmp byte ptr[ebp+0x58A4],0x0
 		je _warune
-		cmp byte ptr[tele_packet+0x4],0x1
+		cmp byte ptr[ebp+0x58A4],0x1
 		je _fotamion
-		cmp byte ptr[tele_packet+0x4],0x2
+		cmp byte ptr[ebp+0x58A4],0x2
 		je _meteora
 		jmp effect_fail
 
@@ -367,25 +379,28 @@ void __declspec(naked) effect_hook() {
 	}
 }
 
-//hooks CUser::CancelMove
-void __declspec(naked) cancel_hook() {
+//hooks CUser::UpdateResetPosition
+void __declspec(naked) type_hook() {
 	__asm {
-		//to-do: do away with this
-		cmp ecx,0x2 //teleport type
-		jl _check
-		_cancel:
-		jmp cancel_retn
+		//use a custom type
+		cmp eax,0x7
+		je type_one
+		//original code
+		cmp eax,0x1
+		jne type_two
 
-		//check if the user canceled
-		_check:
-		cmp dword ptr[eax+0x58B8],0x0
-		jne _cancel
-        	jmp cancel_fail
+		//use type one code
+		type_one:
+		jmp type_retn
+
+		type_two:
+		jmp type_jump
 	}
 }
 
+//main function
 void TownFunc() {
 	Hook((void*)0x4784D2, packet_hook, 9);
 	Hook((void*)0x473163, effect_hook, 13);
-	Hook((void*)0x49AE61, cancel_hook, 5);
+	Hook((void*)0x49DDBF, type_hook, 9);
 }
